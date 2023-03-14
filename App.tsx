@@ -1,12 +1,13 @@
 import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { Text } from "react-native";
+import { StackNavigator } from "./src/stack-navigator";
 
 export default function App() {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-red-500">This is gonna be 🔥, LEL</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <StackNavigator />
+      <Text>Test</Text>
+    </NavigationContainer>
   );
 }
