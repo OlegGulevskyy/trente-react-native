@@ -1,14 +1,21 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../../lib/supabase";
-import { StyleSheet, View, Alert } from "react-native";
-import { Button } from "react-native";
+import { View, Alert } from "react-native";
+import { Button, Text } from "react-native";
 import { Session } from "@supabase/supabase-js";
+
+import { ScreenContainer } from "../../components/ScreenContainer";
+import { supabase, Database } from "../../lib/supabase";
+
+type PartialAccount = Pick<
+  Database["public"]["Tables"]["Users"]["Row"],
+  "name" | "picture"
+>;
 
 export const Account = ({ session }: { session: Session }) => {
   const [loading, setLoading] = useState(true);
-  const [username, setUsername] = useState("");
-  const [website, setWebsite] = useState("");
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const [account, setAccount] = useState<PartialAccount | null>(null);
+
+  console.log("account", account);
 
   useEffect(() => {
     if (session) getProfile();
@@ -20,9 +27,9 @@ export const Account = ({ session }: { session: Session }) => {
       if (!session?.user) throw new Error("No user on the session!");
 
       let { data, error, status } = await supabase
-        .from("profiles")
-        .select(`username, website, avatar_url`)
-        .eq("id", session?.user.id)
+        .from("Users")
+        .select(`name, picture`)
+        .eq("googleId", session?.user.id)
         .single();
 
       if (error && status !== 406) {
@@ -30,44 +37,7 @@ export const Account = ({ session }: { session: Session }) => {
       }
 
       if (data) {
-        setUsername(data.username);
-        setWebsite(data.website);
-        setAvatarUrl(data.avatar_url);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function updateProfile({
-    username,
-    website,
-    avatar_url,
-  }: {
-    username: string;
-    website: string;
-    avatar_url: string;
-  }) {
-    try {
-      setLoading(true);
-      if (!session?.user) throw new Error("No user on the session!");
-
-      const updates = {
-        id: session?.user.id,
-        username,
-        website,
-        avatar_url,
-        updated_at: new Date(),
-      };
-
-      let { error } = await supabase.from("profiles").upsert(updates);
-
-      if (error) {
-        throw error;
+        setAccount(data);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -79,35 +49,11 @@ export const Account = ({ session }: { session: Session }) => {
   }
 
   return (
-    <View>
-      <View className="mt-36">
-        <Button
-          title={loading ? "Loading ..." : "Update"}
-          onPress={() =>
-            updateProfile({ username, website, avatar_url: avatarUrl })
-          }
-          disabled={loading}
-        />
-      </View>
-
-      <View style={styles.verticallySpaced}>
+    <ScreenContainer>
+      <View>
+        <Text>Hello, {account?.name}</Text>
         <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
       </View>
-    </View>
+    </ScreenContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 40,
-    padding: 12,
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: "stretch",
-  },
-  mt20: {
-    marginTop: 20,
-  },
-});
