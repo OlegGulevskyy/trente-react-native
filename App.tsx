@@ -1,45 +1,47 @@
 import "react-native-url-polyfill/auto";
-import { useState, useEffect } from "react";
-import { Session } from "@supabase/supabase-js";
+import { useCallback, useEffect, useState } from "react";
 import { View } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
+import * as Font from "expo-font";
 
-import { supabase } from "./src/lib/supabase";
 import { Auth } from "./src/screens/Auth";
 import { Account } from "./src/screens/Account";
+import { useSupabaseSession } from "./src/lib/supabase";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
+  const [appIsReady, setAppIsReady] = useState(false);
+  const { session } = useSupabaseSession();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === "SIGNED_IN") {
-        const { user } = session;
-        const { data } = await supabase
-          .from("Users")
-          .select("*")
-          .eq("googleId", user.id);
-
-        const userExists = Boolean(data.length);
-        if (!userExists) {
-          await supabase.from("Users").insert({
-            googleId: user.id,
-            email: user.email,
-            name: session.user.user_metadata.full_name,
-            picture: user.user_metadata.avatar_url,
-          });
-        }
+    async function prepare() {
+      try {
+        await Font.loadAsync({
+          KosugiMaru: require("./src/assets/fonts/KosugiMaru-Regular.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
       }
+    }
 
-      setSession(session);
-    });
+    prepare();
   }, []);
 
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
-    <View>
+    <View onLayout={onLayoutRootView}>
       {session && session.user ? (
         <Account key={session.user.id} session={session} />
       ) : (

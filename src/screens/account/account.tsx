@@ -15,8 +15,6 @@ export const Account = ({ session }: { session: Session }) => {
   const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState<PartialAccount | null>(null);
 
-  console.log("account", account);
-
   useEffect(() => {
     if (session) getProfile();
   }, [session]);

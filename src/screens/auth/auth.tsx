@@ -1,8 +1,11 @@
 import React from "react";
-import { View, Button } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { makeRedirectUri, startAsync } from "expo-auth-session";
 
 import { supabase, SUPABASE_URL } from "../../lib/supabase";
+import { TrenteLogoMin } from "../../assets/logos/trente-min";
+import { RobotSvg } from "../../assets/images/robot";
+import { HorizontalGroup } from "../../components/HorizontalGroup";
 
 const signInWithGoogle = async () => {
   const redirectUrl = makeRedirectUri({
@@ -25,9 +28,28 @@ const signInWithGoogle = async () => {
 export const Auth = () => {
   return (
     <View className="mt-14">
-      <View>
-        <Button title="Sign in with Google" onPress={signInWithGoogle} />
-      </View>
+      <HorizontalGroup className="mt-14">
+        <TrenteLogoMin className="m-auto" />
+      </HorizontalGroup>
+      <HorizontalGroup className="mt-14">
+        <RobotSvg className="m-auto" />
+      </HorizontalGroup>
+      <Text className="font-primary mt-14">
+        <Text className="text-blue-primary text-3xl text-center">
+          Discover artists & music around{" "}
+          <Text className="text-yellow-primary">you</Text>.
+        </Text>
+      </Text>
+      <HorizontalGroup className="mt-14">
+        <TouchableOpacity
+          onPress={signInWithGoogle}
+          className="bg-blue-primary m-auto rounded-lg p-4 items-center justify-center w-[200]"
+        >
+          <Text className="text-white font-semibold text-lg">
+            Sign in with Google
+          </Text>
+        </TouchableOpacity>
+      </HorizontalGroup>
     </View>
   );
 };
