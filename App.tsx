@@ -12,6 +12,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
+  const [hideSplashScreen, setResourcesReady] = useState(false);
   const { session } = useSupabaseSession();
 
   useEffect(() => {
@@ -31,10 +32,11 @@ export default function App() {
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
+    if (appIsReady && !hideSplashScreen) {
       await SplashScreen.hideAsync();
+      setResourcesReady(true);
     }
-  }, [appIsReady]);
+  }, [appIsReady, hideSplashScreen]);
 
   if (!appIsReady) {
     return null;
