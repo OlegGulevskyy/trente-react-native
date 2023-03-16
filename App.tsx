@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { Auth } from "./src/screens/Auth";
 import { Home } from "./src/screens/Home";
-import { useSupabaseSession } from "./src/lib/supabase";
+import { supabase, useSupabaseSession } from "./src/lib/supabase";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 SplashScreen.preventAutoHideAsync();

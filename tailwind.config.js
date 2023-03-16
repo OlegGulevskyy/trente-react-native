@@ -5,16 +5,19 @@ module.exports = {
     extend: {
       fontFamily: {
         primary: ["KosugiMaru"],
-				coolvetica: ["Coolvetica"],
+        coolvetica: ["Coolvetica"],
       },
       textColor: {
         ["blue-primary"]: "#284B63",
         ["yellow-primary"]: "#B68F40",
-				["light-gray"]: "#353535",
+        ["light-gray"]: "#353535",
       },
       backgroundColor: {
         ["blue-primary"]: "#284B63",
         ["yellow-primary"]: "#B68F40",
+      },
+      borderColor: {
+        ["blue-primary"]: "#284B63",
       },
     },
   },

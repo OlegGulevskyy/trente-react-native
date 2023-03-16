@@ -33,6 +33,7 @@ const CurrentOnboardingScreen = ({ index, ...props }: CurrentScreenProps) => {
 export const Onboarding = ({}) => {
   const [screenIndex, setScreenIndex] = useState(0);
   const [accountType, setAccountType] = useState<AccountType | null>(null);
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   const changeScreenTo = (screenKey: OnboardingScreenKeys) => {
     const index = onboardingScreens.findIndex((s) => s.key === screenKey);
@@ -80,6 +81,8 @@ export const Onboarding = ({}) => {
           index={screenIndex}
           accountType={accountType}
           setAccountType={setAccountType}
+          selectedGenres={selectedGenres}
+          setSelectedGenres={setSelectedGenres}
         />
       </View>
 
