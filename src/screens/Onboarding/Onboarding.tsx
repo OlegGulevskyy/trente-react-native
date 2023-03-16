@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { ArrowBackIcon } from "../../assets/images/arrow-back";
 import { TrenteLogoMin } from "../../assets/logos/trente-min";
 import { HorizontalGroup } from "../../components/HorizontalGroup";
 import { ScreenContainer } from "../../components/ScreenContainer";
@@ -38,10 +39,25 @@ export const Onboarding = ({}) => {
     setScreenIndex(index);
   };
 
+  const handleContinue = () => {
+    if (screenIndex === 0 && !accountType) {
+      return;
+    }
+    changeScreenTo("musicPrefs");
+  };
+
   return (
     <ScreenContainer className="flex-col justify-between h-screen">
       <View>
         <View>
+          {screenIndex !== 0 && (
+            <TouchableOpacity
+              className="absolute left-8 top-1 z-10"
+              onPress={() => changeScreenTo("accountType")}
+            >
+              <ArrowBackIcon className="" />
+            </TouchableOpacity>
+          )}
           <HorizontalGroup>
             <TrenteLogoMin className="m-auto" />
           </HorizontalGroup>
@@ -73,6 +89,7 @@ export const Onboarding = ({}) => {
             Select one of the above to continue
           </Text>
           <TouchableOpacity
+            onPress={handleContinue}
             className={`m-auto ${
               !accountType ? "bg-none" : "bg-blue-primary"
             } ${
