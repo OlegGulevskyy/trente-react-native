@@ -1,11 +1,12 @@
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text } from "react-native";
 import { makeRedirectUri, startAsync } from "expo-auth-session";
 
 import { supabase, SUPABASE_URL } from "../../lib/supabase";
 import { TrenteLogoMin } from "../../assets/logos/trente-min";
 import { RobotSvg } from "../../assets/images/robot";
 import { HorizontalGroup } from "../../components/HorizontalGroup";
+import { ScreenContainer } from "../../components/ScreenContainer";
 
 const signInWithGoogle = async () => {
   const redirectUrl = makeRedirectUri({
@@ -27,7 +28,7 @@ const signInWithGoogle = async () => {
 
 export const Auth = () => {
   return (
-    <View className="mt-14">
+    <ScreenContainer>
       <HorizontalGroup className="mt-14">
         <TrenteLogoMin className="m-auto" />
       </HorizontalGroup>
@@ -50,6 +51,6 @@ export const Auth = () => {
           </Text>
         </TouchableOpacity>
       </HorizontalGroup>
-    </View>
+    </ScreenContainer>
   );
 };

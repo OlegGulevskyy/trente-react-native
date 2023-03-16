@@ -5,10 +5,12 @@ module.exports = {
     extend: {
       fontFamily: {
         primary: ["KosugiMaru"],
+				coolvetica: ["Coolvetica"],
       },
       textColor: {
         ["blue-primary"]: "#284B63",
         ["yellow-primary"]: "#B68F40",
+				["light-gray"]: "#353535",
       },
       backgroundColor: {
         ["blue-primary"]: "#284B63",

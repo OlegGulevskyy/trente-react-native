@@ -1,14 +1,16 @@
 import "react-native-url-polyfill/auto";
-import { useCallback, useEffect, useState } from "react";
-import { View } from "react-native";
+import { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
 
 import { Auth } from "./src/screens/Auth";
-import { Account } from "./src/screens/Account";
+import { Home } from "./src/screens/Home";
 import { useSupabaseSession } from "./src/lib/supabase";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 SplashScreen.preventAutoHideAsync();
+const Root = createNativeStackNavigator();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -20,6 +22,7 @@ export default function App() {
       try {
         await Font.loadAsync({
           KosugiMaru: require("./src/assets/fonts/KosugiMaru-Regular.ttf"),
+          Coolvetica: require("./src/assets/fonts/coolvetica-regular.ttf"),
         });
       } catch (e) {
         console.warn(e);
@@ -31,10 +34,13 @@ export default function App() {
     prepare();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady && !hideSplashScreen) {
+  useEffect(() => {
+    const disableSplashScreen = async () => {
       await SplashScreen.hideAsync();
       setResourcesReady(true);
+    };
+    if (appIsReady && !hideSplashScreen) {
+      disableSplashScreen();
     }
   }, [appIsReady, hideSplashScreen]);
 
@@ -43,12 +49,18 @@ export default function App() {
   }
 
   return (
-    <View onLayout={onLayoutRootView}>
-      {session && session.user ? (
-        <Account key={session.user.id} session={session} />
-      ) : (
-        <Auth />
-      )}
-    </View>
+    <NavigationContainer>
+      <Root.Navigator screenOptions={{ headerShown: false }}>
+        {session && session.user ? (
+          <Root.Screen name="Home">
+            {(props) => (
+              <Home {...props} session={session} key={session.user.id} />
+            )}
+          </Root.Screen>
+        ) : (
+          <Root.Screen name="Auth" component={Auth} />
+        )}
+      </Root.Navigator>
+    </NavigationContainer>
   );
 }
