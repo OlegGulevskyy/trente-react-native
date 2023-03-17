@@ -4,7 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Auth } from "./src/screens/Auth";
+import { Unauthenticated } from "./src/screens/Unauthenticated";
 import { Authenticated } from "./src/screens/Authenticated";
 import { useSupabaseSession } from "./src/hooks/useSession";
 import { usePrepareApp } from "./src/hooks/usePrepare";
@@ -53,7 +53,7 @@ export default function App() {
             )}
           </Root.Screen>
         ) : (
-          <Root.Screen name="Auth" component={Auth} />
+          <Root.Screen name="Unauthenticated" component={Unauthenticated} />
         )}
       </Root.Navigator>
     </NavigationContainer>

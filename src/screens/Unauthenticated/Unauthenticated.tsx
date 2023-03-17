@@ -26,7 +26,7 @@ const signInWithGoogle = async () => {
   }
 };
 
-export const Auth = () => {
+export const Unauthenticated = () => {
   return (
     <ScreenContainer>
       <HorizontalGroup className="mt-14">
