@@ -12,7 +12,7 @@ import {
 import { CancelIcon } from "../../../assets/images/cancel-icon";
 import { SearchIcon } from "../../../assets/images/search-icon";
 import { useUser } from "../../../hooks/useUser";
-import { HomeNavigation } from "../../../screens/Home/navigation";
+import { AuthenticatedNavigation } from "../../../screens/Authenticated/navigation";
 import { BottomButton } from "../components/BottomButton/ButtomButton";
 import { OnboardingScreenSubheader } from "../components/OnboardingScreenSubheader";
 import { MUSIC_GENRES } from "../const";
@@ -42,7 +42,7 @@ export const MusicPrefsSelection = ({
       selectedGenres,
     });
     if (saved) {
-      const parent = navigation.getParent<HomeNavigation>();
+      const parent = navigation.getParent<AuthenticatedNavigation>();
       parent?.navigate("Playground");
     }
     setIsLoading(false);

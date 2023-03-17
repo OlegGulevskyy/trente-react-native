@@ -9,6 +9,7 @@ import { Authenticated } from "./src/screens/Authenticated";
 import { useSupabaseSession } from "./src/hooks/useSession";
 import { usePrepareApp } from "./src/hooks/usePrepare";
 import { NavigationTheme } from "./src/theme/navigationTheme";
+import { useAppHeader } from "./src/hooks/useAppHeader";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,11 +40,13 @@ export default function App() {
     return null;
   }
 
+  const { headerOptions } = useAppHeader();
+
   return (
     <NavigationContainer theme={NavigationTheme}>
       <Root.Navigator screenOptions={{ headerShown: false }}>
         {session && session.user ? (
-          <Root.Screen name="Authenticated">
+          <Root.Screen name="Authenticated" options={{ ...headerOptions }}>
             {(props) => (
               <Authenticated
                 {...props}
@@ -53,7 +56,11 @@ export default function App() {
             )}
           </Root.Screen>
         ) : (
-          <Root.Screen name="Unauthenticated" component={Unauthenticated} />
+          <Root.Screen
+            name="Unauthenticated"
+            component={Unauthenticated}
+            options={{ headerShown: false }}
+          />
         )}
       </Root.Navigator>
     </NavigationContainer>
