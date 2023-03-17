@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Auth } from "./src/screens/Auth";
-import { Home } from "./src/screens/Home";
+import { Authenticated } from "./src/screens/Authenticated";
 import { useSupabaseSession } from "./src/hooks/useSession";
 import { usePrepareApp } from "./src/hooks/usePrepare";
 import { NavigationTheme } from "./src/theme/navigationTheme";
@@ -43,9 +43,13 @@ export default function App() {
     <NavigationContainer theme={NavigationTheme}>
       <Root.Navigator screenOptions={{ headerShown: false }}>
         {session && session.user ? (
-          <Root.Screen name="Home">
+          <Root.Screen name="Authenticated">
             {(props) => (
-              <Home {...props} session={session} key={session.user.id} />
+              <Authenticated
+                {...props}
+                session={session}
+                key={session.user.id}
+              />
             )}
           </Root.Screen>
         ) : (

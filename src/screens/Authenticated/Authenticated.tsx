@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { supabase, Database } from "../../lib/supabase";
 import { Onboarding } from "../../features/Onboarding";
 import { Playground } from "../../features/Playground";
-import { useHomeNavigation } from "./navigation";
+import { useAuthenticatedNavigation } from "./navigation";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -15,9 +15,9 @@ type PartialAccount = Pick<
   "name" | "picture" | "type"
 >;
 
-export const Home = ({ session }: { session: Session }) => {
+export const Authenticated = ({ session }: { session: Session }) => {
   const [account, setAccount] = useState<PartialAccount | null>(null);
-  const navigation = useHomeNavigation();
+  const navigation = useAuthenticatedNavigation();
 
   // if account type is not selected by user, we need to onboard them
   const requiresOnboarding = useMemo(() => {
