@@ -11,17 +11,34 @@ import {
 
 import { CancelIcon } from "../../../assets/images/cancel-icon";
 import { SearchIcon } from "../../../assets/images/search-icon";
+import { useUser } from "../../../hooks/useUser";
+import { HomeNavigation } from "../../../screens/Home/navigation";
 import { BottomButton } from "../components/BottomButton/ButtomButton";
 import { OnboardingScreenSubheader } from "../components/OnboardingScreenSubheader";
 import { MUSIC_GENRES } from "../const";
 import { useOnboardingStore } from "../state";
 import { OnboardingScreenProps } from "../types";
 
-export const MusicPrefsSelection = ({ route }: OnboardingScreenProps) => {
+export const MusicPrefsSelection = ({
+  route,
+  navigation,
+}: OnboardingScreenProps) => {
   const [input, setInput] = useState("");
-  const { selectedGenres, setSelectedGenres } = useOnboardingStore();
+  const {
+    selectedGenres,
+    setSelectedGenres,
+    accountType,
+    saveToSupabase,
+  } = useOnboardingStore();
   const [isFocused, setIsFocused] = useState(false);
   const [genres, setGenres] = useState(MUSIC_GENRES);
+  const { user } = useUser();
+
+  const finishOnboarding = async () => {
+    saveToSupabase(user, { accountType, selectedGenres });
+    const parent = navigation.getParent<HomeNavigation>();
+    parent?.navigate("Playground");
+  };
 
   const filterItems = (query: string) => {
     return MUSIC_GENRES.filter((el) =>
@@ -117,7 +134,7 @@ export const MusicPrefsSelection = ({ route }: OnboardingScreenProps) => {
       <View className="mb-12">
         <BottomButton
           isActive={Boolean(selectedGenres.length)}
-          onPress={() => console.log("done")}
+          onPress={finishOnboarding}
           text="Start listening"
           label="You can always change your preferences later"
         />

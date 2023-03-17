@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { supabase, Database } from "../../lib/supabase";
 import { Onboarding } from "../../features/Onboarding";
 import { Playground } from "../../features/Playground";
+import { useHomeNavigation } from "./navigation";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ type PartialAccount = Pick<
 
 export const Home = ({ session }: { session: Session }) => {
   const [account, setAccount] = useState<PartialAccount | null>(null);
+  const navigation = useHomeNavigation();
 
   // if account type is not selected by user, we need to onboard them
   const requiresOnboarding = useMemo(() => {
@@ -52,14 +54,20 @@ export const Home = ({ session }: { session: Session }) => {
     }
   }
 
+  useEffect(() => {
+    if (requiresOnboarding) {
+      navigation.navigate("Onboarding");
+    } else {
+      navigation.navigate("Playground");
+    }
+  }, [requiresOnboarding]);
+
   return (
     <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-      {requiresOnboarding ? (
+      <>
         <HomeStack.Screen name="Onboarding" component={Onboarding} />
-      ) : (
-        // If user is onboarded - show them the main playground page
         <HomeStack.Screen name="Playground" component={Playground} />
-      )}
+      </>
     </HomeStack.Navigator>
   );
 };

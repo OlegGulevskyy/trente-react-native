@@ -1,5 +1,6 @@
 import { NavigationProp } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { UserDb } from "../../hooks/useSession";
 
 export type AccountType = "artist" | "pro" | "fan";
 export type CurrentScreenProps = {
@@ -15,6 +16,10 @@ export type OnboardingStore = {
   setAccountType: (type: AccountType) => void;
   selectedGenres: string[];
   setSelectedGenres: (genres: string[]) => void;
+  saveToSupabase: (
+    user: UserDb,
+    props: Pick<CurrentScreenProps, "accountType" | "selectedGenres">
+  ) => void;
 };
 
 export type OnboardingNavigationRoutes = {
@@ -22,6 +27,6 @@ export type OnboardingNavigationRoutes = {
   MusicPreference: undefined;
 };
 
-export type OnboardingScreenProps = NativeStackScreenProps<OnboardingNavigationRoutes>
+export type OnboardingScreenProps = NativeStackScreenProps<OnboardingNavigationRoutes>;
 
 export type OnboardingNavigationProps = NavigationProp<OnboardingNavigationRoutes>;

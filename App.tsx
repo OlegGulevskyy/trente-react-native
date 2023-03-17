@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Auth } from "./src/screens/Auth";
 import { Home } from "./src/screens/Home";
-import { useSupabaseSession } from "./src/lib/supabase";
+import { useSupabaseSession } from "./src/hooks/useSession";
 import { usePrepareApp } from "./src/hooks/usePrepare";
 import { NavigationTheme } from "./src/theme/navigationTheme";
 
