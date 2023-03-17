@@ -1,10 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
-import { View, Alert, Button } from "react-native";
-import { Text } from "react-native";
+import { Alert } from "react-native";
 import { Session } from "@supabase/supabase-js";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { supabase, Database } from "../../lib/supabase";
-import { Onboarding } from "../Onboarding";
+import { Onboarding } from "../../features/Onboarding";
+import { Playground } from "../../features/Playground";
+
+const HomeStack = createNativeStackNavigator();
 
 type PartialAccount = Pick<
   Database["public"]["Tables"]["Users"]["Row"],
@@ -12,7 +15,6 @@ type PartialAccount = Pick<
 >;
 
 export const Home = ({ session }: { session: Session }) => {
-  const [loading, setLoading] = useState(true);
   const [account, setAccount] = useState<PartialAccount | null>(null);
 
   // if account type is not selected by user, we need to onboard them
@@ -28,7 +30,6 @@ export const Home = ({ session }: { session: Session }) => {
 
   async function getProfile() {
     try {
-      setLoading(true);
       if (!session?.user) throw new Error("No user on the session!");
 
       let { data, error, status } = await supabase
@@ -48,20 +49,17 @@ export const Home = ({ session }: { session: Session }) => {
       if (error instanceof Error) {
         Alert.alert(error.message);
       }
-    } finally {
-      setLoading(false);
     }
   }
 
   return (
-    <View>
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
       {requiresOnboarding ? (
-        <Onboarding />
+        <HomeStack.Screen name="Onboarding" component={Onboarding} />
       ) : (
-        <View>
-          <Text>You are now</Text>
-        </View>
+        // If user is onboarded - show them the main playground page
+        <HomeStack.Screen name="Playground" component={Playground} />
       )}
-    </View>
+    </HomeStack.Navigator>
   );
 };
