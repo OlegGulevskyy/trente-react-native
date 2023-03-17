@@ -16,6 +16,7 @@ import { HomeNavigation } from "../../../screens/Home/navigation";
 import { BottomButton } from "../components/BottomButton/ButtomButton";
 import { OnboardingScreenSubheader } from "../components/OnboardingScreenSubheader";
 import { MUSIC_GENRES } from "../const";
+import { saveOnboardingData } from "../logic";
 import { useOnboardingStore } from "../state";
 import { OnboardingScreenProps } from "../types";
 
@@ -28,16 +29,23 @@ export const MusicPrefsSelection = ({
     selectedGenres,
     setSelectedGenres,
     accountType,
-    saveToSupabase,
   } = useOnboardingStore();
   const [isFocused, setIsFocused] = useState(false);
   const [genres, setGenres] = useState(MUSIC_GENRES);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
 
   const finishOnboarding = async () => {
-    saveToSupabase(user, { accountType, selectedGenres });
-    const parent = navigation.getParent<HomeNavigation>();
-    parent?.navigate("Playground");
+    setIsLoading(true);
+    const saved = await saveOnboardingData(user, {
+      accountType,
+      selectedGenres,
+    });
+    if (saved) {
+      const parent = navigation.getParent<HomeNavigation>();
+      parent?.navigate("Playground");
+    }
+    setIsLoading(false);
   };
 
   const filterItems = (query: string) => {
@@ -133,6 +141,7 @@ export const MusicPrefsSelection = ({
       </View>
       <View className="mb-12">
         <BottomButton
+          isLoading={isLoading}
           isActive={Boolean(selectedGenres.length)}
           onPress={finishOnboarding}
           text="Start listening"
