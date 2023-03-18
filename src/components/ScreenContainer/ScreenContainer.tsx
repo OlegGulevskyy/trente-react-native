@@ -5,6 +5,9 @@ type ScreenContainerProps = {
   children: React.ReactNode;
   className?: string;
 };
+
+// @deprecated
+// remove this once refactored authentication screen
 export const ScreenContainer: FC<ScreenContainerProps> = ({
   children,
   className,

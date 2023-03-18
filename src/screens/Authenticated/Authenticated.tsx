@@ -7,8 +7,12 @@ import { supabase, Database } from "../../lib/supabase";
 import { Onboarding } from "../../features/Onboarding";
 import { Playground } from "../../features/Playground";
 import { useAuthenticatedNavigation } from "./navigation";
+import { Home } from "../Home";
+import { Profile } from "../Profile";
+import { History } from "../History";
+import { Messages } from "../Messages";
 
-const HomeStack = createNativeStackNavigator();
+const AuthenticatedStack = createNativeStackNavigator();
 
 type PartialAccount = Pick<
   Database["public"]["Tables"]["Users"]["Row"],
@@ -63,11 +67,17 @@ export const Authenticated = ({ session }: { session: Session }) => {
   }, [requiresOnboarding]);
 
   return (
-    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-      <>
-        <HomeStack.Screen name="Onboarding" component={Onboarding} />
-        <HomeStack.Screen name="Playground" component={Playground} />
-      </>
-    </HomeStack.Navigator>
+    <>
+      <AuthenticatedStack.Navigator screenOptions={{ headerShown: false }}>
+        <>
+          <AuthenticatedStack.Screen name="Onboarding" component={Onboarding} />
+          <AuthenticatedStack.Screen name="Home" component={Home} />
+          <AuthenticatedStack.Screen name="History" component={History} />
+          <AuthenticatedStack.Screen name="Playground" component={Playground} />
+          <AuthenticatedStack.Screen name="Messages" component={Messages} />
+          <AuthenticatedStack.Screen name="Profile" component={Profile} />
+        </>
+      </AuthenticatedStack.Navigator>
+    </>
   );
 };
