@@ -35,8 +35,8 @@ const RegularButton = ({
       {isActive && (
         <LightEffectIcon
           className={clsx(
-            "absolute left-1/2",
-            `-translate-x-[${LIGHT_EFFECT_SVG_WIDTH / 2}px] top-0`
+            "absolute right-1/2",
+            `translate-x-[${LIGHT_EFFECT_SVG_WIDTH / 2}px] top-0`
           )}
           width={LIGHT_EFFECT_SVG_WIDTH}
         />
