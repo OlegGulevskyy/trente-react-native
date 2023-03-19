@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Alert } from "react-native";
 import { Session } from "@supabase/supabase-js";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { supabase, Database } from "../../lib/supabase";
 import { Onboarding } from "../../features/Onboarding";
@@ -11,10 +10,9 @@ import { Home } from "../Home";
 import { Profile } from "../Profile";
 import { History } from "../History";
 import { Messages } from "../Messages";
-import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomMenu } from "../../components/BottomMenu";
 
-const AuthenticatedStack = createNativeStackNavigator();
 const AuthenticatedBottomTabs = createBottomTabNavigator();
 
 type PartialAccount = Pick<
