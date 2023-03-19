@@ -2,7 +2,6 @@ import { Text, View, Image, TouchableOpacity } from "react-native";
 import Swiper from "react-native-deck-swiper";
 import { CheckmarkIcon } from "../../assets/images/checkmark-icon";
 import { CrossIcon } from "../../assets/images/cross-icon";
-import { BottomMenu } from "../../components/BottomMenu";
 import { FullScreenParent } from "../../components/FullScreenParent/FullScreenParent";
 
 const DUMMY_DATA = [
@@ -112,7 +111,6 @@ export const Playground = () => {
         backgroundColor={"transparent"}
         stackSize={3}
       />
-      <BottomMenu />
     </FullScreenParent>
   );
 };

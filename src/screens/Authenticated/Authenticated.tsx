@@ -11,8 +11,11 @@ import { Home } from "../Home";
 import { Profile } from "../Profile";
 import { History } from "../History";
 import { Messages } from "../Messages";
+import { BottomTabBar, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomMenu } from "../../components/BottomMenu";
 
 const AuthenticatedStack = createNativeStackNavigator();
+const AuthenticatedBottomTabs = createBottomTabNavigator();
 
 type PartialAccount = Pick<
   Database["public"]["Tables"]["Users"]["Row"],
@@ -68,16 +71,28 @@ export const Authenticated = ({ session }: { session: Session }) => {
 
   return (
     <>
-      <AuthenticatedStack.Navigator screenOptions={{ headerShown: false }}>
+      <AuthenticatedBottomTabs.Navigator
+        screenOptions={{ headerShown: false }}
+        tabBar={(props) => <BottomMenu {...props} />}
+      >
         <>
-          <AuthenticatedStack.Screen name="Onboarding" component={Onboarding} />
-          <AuthenticatedStack.Screen name="Home" component={Home} />
-          <AuthenticatedStack.Screen name="History" component={History} />
-          <AuthenticatedStack.Screen name="Playground" component={Playground} />
-          <AuthenticatedStack.Screen name="Messages" component={Messages} />
-          <AuthenticatedStack.Screen name="Profile" component={Profile} />
+          <AuthenticatedBottomTabs.Screen
+            name="Onboarding"
+            component={Onboarding}
+          />
+          <AuthenticatedBottomTabs.Screen name="Home" component={Home} />
+          <AuthenticatedBottomTabs.Screen name="History" component={History} />
+          <AuthenticatedBottomTabs.Screen
+            name="Playground"
+            component={Playground}
+          />
+          <AuthenticatedBottomTabs.Screen
+            name="Messages"
+            component={Messages}
+          />
+          <AuthenticatedBottomTabs.Screen name="Profile" component={Profile} />
         </>
-      </AuthenticatedStack.Navigator>
+      </AuthenticatedBottomTabs.Navigator>
     </>
   );
 };

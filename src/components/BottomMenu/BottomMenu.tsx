@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/native";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import clsx from "clsx";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import { SvgProps } from "react-native-svg";
@@ -8,7 +8,6 @@ import { LightEffectIcon } from "../../assets/images/light-effect-icon";
 import { MessagesIcon } from "../../assets/images/messages-icon";
 import { PlayIcon } from "../../assets/images/play-icon";
 import { PersonIcon } from "../../assets/images/profile-icon";
-import { useAuthenticatedNavigation } from "../../screens/Authenticated/navigation";
 
 const MAIN_BUTTON_WIDTH = 96;
 const ICON_SIZE = 30;
@@ -45,11 +44,14 @@ const RegularButton = ({
       <Icon
         width={ICON_SIZE}
         height={ICON_SIZE}
-        className="text-white mx-auto -mt-2"
+        className={clsx(
+          isActive ? "text-yellow-lighter" : "text-white",
+          "mx-auto -mt-2"
+        )}
       />
       <Text
         className={clsx(
-          isActive ? "text-yellow-primary" : "text-white",
+          isActive ? "text-yellow-lighter" : "text-white",
           "font-coolvetica text-lg"
         )}
       >
@@ -59,20 +61,20 @@ const RegularButton = ({
   );
 };
 
-export const BottomMenu = () => {
-  const { name } = useRoute();
-  const navigation = useAuthenticatedNavigation();
+export const BottomMenu = ({ navigation, state }: BottomTabBarProps) => {
+  const currentIndex = state.index;
+  const isActive = (route: string) => state.routes[currentIndex].name === route;
 
   return (
     <View className="flex flex-row bg-blue-primary h-[100] justify-between px-6 relative">
       <RegularButton
         onPress={() => navigation.navigate("Home")}
-        isActive={name === "Home"}
+        isActive={isActive("Home")}
         icon={HomeIcon}
         label="Home"
       />
       <RegularButton
-        isActive={name === "History"}
+        isActive={isActive("History")}
         onPress={() => navigation.navigate("History")}
         icon={HistoryIcon}
         label="History"
@@ -98,13 +100,13 @@ export const BottomMenu = () => {
       </View>
 
       <RegularButton
-        isActive={name === "Messages"}
+        isActive={isActive("Messages")}
         onPress={() => navigation.navigate("Messages")}
         icon={MessagesIcon}
         label="Messages"
       />
       <RegularButton
-        isActive={name === "Profile"}
+        isActive={isActive("Profile")}
         onPress={() => navigation.navigate("Profile")}
         icon={PersonIcon}
         label="Profile"
