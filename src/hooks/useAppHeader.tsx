@@ -1,3 +1,4 @@
+import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity, View } from "react-native";
@@ -11,10 +12,12 @@ import { useSettingsState } from "../features/Settings/Settings";
 type AppHeaderProps = {
   onPressBack?: () => void;
 };
-type UseAppHeader = (
+type UseAppHeader = <
+  T extends NativeStackNavigationOptions | BottomTabNavigationOptions
+>(
   props?: AppHeaderProps
 ) => {
-  headerOptions: NativeStackNavigationOptions;
+  headerOptions: T;
 };
 export const useAppHeader: UseAppHeader = ({ onPressBack } = {}) => {
   const { setIsVisible } = useSettingsState();
@@ -29,7 +32,7 @@ export const useAppHeader: UseAppHeader = ({ onPressBack } = {}) => {
     );
   };
   const headerLogo = () => <TrenteLogoMin />;
-  const headerOptions: NativeStackNavigationOptions = {
+  const headerOptions = {
     headerLeft,
     headerRight: arrowBack,
     headerTitle: headerLogo,

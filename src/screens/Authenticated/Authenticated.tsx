@@ -8,12 +8,11 @@ import { Home } from "../Home";
 import { Profile } from "../Profile";
 import { History } from "../History";
 import { Messages } from "../Messages";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomMenu } from "../../components/BottomMenu";
 import { useUser } from "../../hooks/useUser";
 import { useAppHeader } from "../../hooks/useAppHeader";
 import { FullScreenParent } from "../../components/FullScreenParent/FullScreenParent";
-import { useModalState } from "../../features/Modal";
 import { Settings } from "../../features/Settings";
 
 const AuthenticatedBottomTabs = createBottomTabNavigator();
@@ -22,8 +21,7 @@ export const Authenticated = () => {
   /* const [account, setAccount] = useState<PartialAccount | null>(null); */
   const navigation = useAuthenticatedNavigation();
   const { user, isLoading, error } = useUser();
-  const { headerOptions } = useAppHeader();
-  const isModalVisible = useModalState((state) => state.isVisible);
+  const { headerOptions } = useAppHeader<BottomTabNavigationOptions>();
 
   // if account type is not selected by user, we need to onboard them
   const requiresOnboarding = useMemo(() => {
@@ -51,7 +49,6 @@ export const Authenticated = () => {
   return (
     <>
       <AuthenticatedBottomTabs.Navigator
-        /* TODO: check why TS is not happy */
         screenOptions={{ ...headerOptions }}
         tabBar={(props) => <BottomMenu {...props} />}
       >
