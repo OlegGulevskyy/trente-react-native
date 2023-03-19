@@ -2,6 +2,7 @@ import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack";
 import { HeaderBackButtonProps } from "@react-navigation/native-stack/lib/typescript/src/types";
 import { TouchableOpacity, View } from "react-native";
+
 import { GearIcon } from "../assets/images/gear-icon";
 import { TrenteLogoMin } from "../assets/logos/trente-min";
 import { ArrowBack } from "../features/Onboarding/components/ArrowBack/ArrowBack";

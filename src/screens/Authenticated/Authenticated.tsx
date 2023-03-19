@@ -8,17 +8,20 @@ import { Home } from "../Home";
 import { Profile } from "../Profile";
 import { History } from "../History";
 import { Messages } from "../Messages";
-import { BottomTabNavigationOptions, createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from "@react-navigation/bottom-tabs";
 import { BottomMenu } from "../../components/BottomMenu";
 import { useUser } from "../../hooks/useUser";
 import { useAppHeader } from "../../hooks/useAppHeader";
 import { FullScreenParent } from "../../components/FullScreenParent/FullScreenParent";
 import { Settings } from "../../features/Settings";
+import { LoadingPlaceholder } from "../../components/LoadingPlaceholder";
 
 const AuthenticatedBottomTabs = createBottomTabNavigator();
 
 export const Authenticated = () => {
-  /* const [account, setAccount] = useState<PartialAccount | null>(null); */
   const navigation = useAuthenticatedNavigation();
   const { user, isLoading, error } = useUser();
   const { headerOptions } = useAppHeader<BottomTabNavigationOptions>();
@@ -39,11 +42,7 @@ export const Authenticated = () => {
   }, [requiresOnboarding]);
 
   if (isLoading) {
-    return (
-      <FullScreenParent>
-        <Text className="m-auto">LOADING INFO...</Text>
-      </FullScreenParent>
-    );
+    return <LoadingPlaceholder />;
   }
 
   return (
