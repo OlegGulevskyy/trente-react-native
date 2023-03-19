@@ -2,6 +2,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import clsx from "clsx";
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import { SvgProps } from "react-native-svg";
+
 import { HistoryIcon } from "../../assets/images/history-icon";
 import { HomeIcon } from "../../assets/images/home-icon";
 import { LightEffectIcon } from "../../assets/images/light-effect-icon";
@@ -34,10 +35,8 @@ const RegularButton = ({
     >
       {isActive && (
         <LightEffectIcon
-          className={clsx(
-            "absolute right-1/2",
-            `translate-x-[${LIGHT_EFFECT_SVG_WIDTH / 2}px] top-0`
-          )}
+          className={clsx("absolute right-1/2", `top-0`)}
+          style={{ transform: [{ translateX: LIGHT_EFFECT_SVG_WIDTH / 2 }] }}
           width={LIGHT_EFFECT_SVG_WIDTH}
         />
       )}
@@ -64,6 +63,10 @@ const RegularButton = ({
 export const BottomMenu = ({ navigation, state }: BottomTabBarProps) => {
   const currentIndex = state.index;
   const isActive = (route: string) => state.routes[currentIndex].name === route;
+
+  if (state.routes[currentIndex].name === "Onboarding") {
+    return null;
+  }
 
   return (
     <View className="flex flex-row bg-blue-primary h-[100] justify-between px-6 relative">

@@ -10,7 +10,9 @@ export const Onboarding = () => {
   });
 
   return (
-    <OnboardingNavigator.Navigator screenOptions={headerOptions}>
+    <OnboardingNavigator.Navigator
+      screenOptions={{ headerShown: false, ...headerOptions }}
+    >
       <OnboardingNavigator.Screen
         name="AccountType"
         component={AccountTypeSelection}

@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { QueryClientProvider } from "@tanstack/react-query";
 
 import { Unauthenticated } from "./src/screens/Unauthenticated";
 import { Authenticated } from "./src/screens/Authenticated";
 import { useSupabaseSession } from "./src/hooks/useSession";
 import { usePrepareApp } from "./src/hooks/usePrepare";
 import { NavigationTheme } from "./src/theme/navigationTheme";
-import { useAppHeader } from "./src/hooks/useAppHeader";
+import { queryClient } from "./src/lib/query";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -40,29 +41,29 @@ export default function App() {
     return null;
   }
 
-  const { headerOptions } = useAppHeader();
-
   return (
-    <NavigationContainer theme={NavigationTheme}>
-      <Root.Navigator screenOptions={{ headerShown: false }}>
-        {session && session.user ? (
-          <Root.Screen name="Authenticated" options={{ ...headerOptions }}>
-            {(props) => (
-              <Authenticated
-                {...props}
-                session={session}
-                key={session.user.id}
-              />
-            )}
-          </Root.Screen>
-        ) : (
-          <Root.Screen
-            name="Unauthenticated"
-            component={Unauthenticated}
-            options={{ headerShown: false }}
-          />
-        )}
-      </Root.Navigator>
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer theme={NavigationTheme}>
+        <Root.Navigator screenOptions={{ headerShown: false }}>
+          {session && session.user ? (
+            <Root.Screen name="Authenticated">
+              {(props) => (
+                <Authenticated
+                  {...props}
+                  session={session}
+                  key={session.user.id}
+                />
+              )}
+            </Root.Screen>
+          ) : (
+            <Root.Screen
+              name="Unauthenticated"
+              component={Unauthenticated}
+              options={{ headerShown: false }}
+            />
+          )}
+        </Root.Navigator>
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }

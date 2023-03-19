@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react";
-import { useSupabaseSession } from "../hooks/useSession";
-import { UserDb } from "../hooks/useSession";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { getUser } from "../data/user";
+import { supabase } from "../lib/supabase";
 
 export const useUser = () => {
-  const { session } = useSupabaseSession();
-  const [user, setUser] = useState<UserDb | null>(null);
+  const [session, setSession] = useState(null);
+  if (!session) {
+    supabase.auth.getSession().then((session) => {
+      setSession(session.data.session);
+    });
+  }
 
-  useEffect(() => {
-    if (session) {
-      getUser(session.user.id).then((user) => {
-        setUser(user);
-      });
-    }
-  }, [session]);
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getUser(session.user.id),
+    enabled: !!session,
+  });
 
-  return { user };
+  return { user: data, error, isLoading };
 };
