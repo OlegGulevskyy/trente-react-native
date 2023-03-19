@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { View, Text } from "react-native";
+import { useEffect, useMemo } from "react";
+import { Text } from "react-native";
 
 import { Onboarding } from "../../features/Onboarding";
 import { Playground } from "../../features/Playground";
@@ -13,6 +13,8 @@ import { BottomMenu } from "../../components/BottomMenu";
 import { useUser } from "../../hooks/useUser";
 import { useAppHeader } from "../../hooks/useAppHeader";
 import { FullScreenParent } from "../../components/FullScreenParent/FullScreenParent";
+import { useModalState } from "../../features/Modal";
+import { Settings } from "../../features/Settings";
 
 const AuthenticatedBottomTabs = createBottomTabNavigator();
 
@@ -21,6 +23,7 @@ export const Authenticated = () => {
   const navigation = useAuthenticatedNavigation();
   const { user, isLoading, error } = useUser();
   const { headerOptions } = useAppHeader();
+  const isModalVisible = useModalState((state) => state.isVisible);
 
   // if account type is not selected by user, we need to onboard them
   const requiresOnboarding = useMemo(() => {
@@ -71,6 +74,7 @@ export const Authenticated = () => {
           <AuthenticatedBottomTabs.Screen name="Profile" component={Profile} />
         </>
       </AuthenticatedBottomTabs.Navigator>
+      <Settings />
     </>
   );
 };
